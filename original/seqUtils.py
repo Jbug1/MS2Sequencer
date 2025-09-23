@@ -30,6 +30,8 @@ def build_delta_dict(element_masses, element_limits, precision_limit):
 
         delta_dict[delta].append(element_composition)
 
+    return delta_dict
+
 
 
 
