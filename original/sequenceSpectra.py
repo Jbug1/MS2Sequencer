@@ -4,9 +4,9 @@ from importlib.util import spec_from_file_location, module_from_spec
 import shutil
 from os import makedirs
 from MS2sequencer import deltaSolver, parentFormula
+from mzDB import mzDB
 import pandas as pd
 from joblib import Parallel, delayed
-
 
 def main(config_path):
 
@@ -24,6 +24,18 @@ def main(config_path):
     shutil.copy(config_path, f'{config.log_path}/config.py')
 
     logger.info(f'instantiated log and copied config')
+
+    #if necessary, create the DBs for sequencer that we can reference
+    if config.create_dbs:
+
+        mz_db = mzDB()
+
+        #create non-negative coefficient dictionaries
+        mz_db.create_non_negative_dbs()
+
+        #create unconstrained dictionaries
+        mz_db.create_unconstrained_dbs()
+        
 
     #read inputs to be sequenced
     input_data = pd.read_pickle(config.pickle_path)
